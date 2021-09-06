@@ -14,53 +14,30 @@ struct CounterView: View {
     @Binding var regex: String
     
     var body: some View {
-        VStack(spacing: 16) {
-            VStack(spacing: 8) {
-                HStack(alignment: .bottom) {
-                    Text("Enter pattern:")
-                        .font(.system(size: 17, weight: .medium))
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        input = ""
-                        count()
-                        countPressedOnce = false
-                    }) {
-                        Text("Clear")
-                            .foregroundColor(.white)
-                            .font(.system(size: 17, weight: .medium))
-                            .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
-                            .background(Color.red)
-                            .cornerRadius(8)
-                        
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    
-                    Button(action: {
-                        count()
-                        countPressedOnce = true
-                    }) {
-                        Text("Count")
-                            .foregroundColor(.white)
-                            .font(.system(size: 17, weight: .medium))
-                            .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
-                            .background(Color.blue)
-                            .cornerRadius(8)
-                        
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }
+        VStack(spacing: 12) {
+            HStack {
+                Text("Enter Pattern")
+                    .font(.system(size: 17, weight: .medium))
                 
-                HStack {
-                    TextEditor(text: $input)
-                        .font(.system(size: 21, weight: .medium))
-                        .frame(maxHeight: results.count > 0 ? 100 : .infinity)
-                        .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 0))
-                        .background(Color.white)
-                        .cornerRadius(16)
-                }
+                Spacer()
             }
+            
+            TextEditor(text: $input)
+                .font(.system(size: 21, weight: .medium))
+                .frame(maxHeight: results.count > 0 ? 100 : .infinity)
+                .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 0))
+                .background(Color("Background"))
+                .cornerRadius(16)
+                .overlay(
+                    Group {
+                        if input.isEmpty {
+                            Text("Enter your pattern here")
+                                .font(.system(size: 21, weight: .bold))
+                                .opacity(0.25)
+                                .padding(EdgeInsets(top: 16, leading: 24, bottom: 0, trailing: 0))
+                        }
+                    }, alignment: .topLeading
+                )
             
             if results.count > 0 {
                 VStack(spacing: 8) {
@@ -76,8 +53,8 @@ struct CounterView: View {
                             pasteboard.setString("\(getTotal(from: results))", forType: .string)
                         }) {
                             Text("\(getTotal(from: results))")
-                                .font(.system(size: 24, weight: .bold))
-                                .foregroundColor(Color(#colorLiteral(red: 0.2526637316, green: 0.7980186343, blue: 0.9190346003, alpha: 1)))
+                                .font(.system(size: 32, weight: .bold))
+                                .foregroundColor(Color.accentColor)
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
@@ -90,7 +67,7 @@ struct CounterView: View {
                                         HStack {
                                             Text(result.pattern)
                                                 .padding(6)
-                                                .background(Color.white)
+                                                .background(Color("Background"))
                                                 .cornerRadius(6)
                                             
                                             Image(systemName: "xmark")
@@ -110,18 +87,20 @@ struct CounterView: View {
                                         .font(.system(size: 17, weight: .regular))
                                 }
                                 .padding(10)
-                                .background(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1)))
+                                .background(Color("SecondaryBackground"))
                                 .cornerRadius(8)
                             }
                         }
                         .padding(16)
                     }
-                    .background(Color.white)
+                    .background(Color("Background"))
                     .cornerRadius(16)
                 }
             } else {
                 if countPressedOnce {
                     Text("Enter a valid pattern")
+                        .font(.system(size: 17, weight: .medium))
+                        .opacity(0.5)
                 }
                 Spacer()
             }
@@ -130,6 +109,45 @@ struct CounterView: View {
             count()
         }
         .padding()
+        .toolbar {
+            ToolbarItemGroup(placement: .primaryAction) {
+                if !input.isEmpty {
+                    Button(action: {
+                        input = ""
+                        count()
+                        withAnimation {
+                            countPressedOnce = false
+                        }
+                    }) {
+                        Text("Clear")
+                            .font(.system(size: 15, weight: .medium))
+                            .foregroundColor(Color.white)
+                            .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
+                            .background(Color("Destructive"))
+                            .cornerRadius(8)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
+                
+                Button(action: {
+                    count()
+                    withAnimation {
+                        countPressedOnce = true
+                    }
+                }) {
+                    Text("Count")
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundColor(Color.white)
+                        .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
+                        .background(Color.accentColor)
+                        .cornerRadius(8)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .allowsTightening(!input.isEmpty)
+                .opacity(input.isEmpty ? 0.75 : 1)
+            }
+            
+        }
     }
     
     
@@ -159,7 +177,7 @@ struct CounterView: View {
         withAnimation {
             self.results = results
         }
-   
+        
     }
     
     func countStitchesIn(string: String) -> [Result] {
@@ -168,14 +186,19 @@ struct CounterView: View {
         
         let matchedSubstrings = matchRegex(stringToCheck: string, regex: regex)
         for substring in matchedSubstrings {
-            let contentsValueOne = extractStitchText(group: substring, name: "one", in: string)
-            let contentsValueTwo = extractStitchText(group: substring, name: "two", in: string)
+            let contentsValueOne = extractStitchText(group: substring, name: "count1", in: string)
+            let contentsValueTwo = extractStitchText(group: substring, name: "count2", in: string)
+            let contentsValueThree = extractStitchText(group: substring, name: "count3", in: string)
+            
             
             if !contentsValueOne.isEmpty {
                 let match = Stitch(name: contentsValueOne, count: 1)
                 stitches.append(match)
-            } else {
+            } else if !contentsValueTwo.isEmpty {
                 let match = Stitch(name: contentsValueTwo, count: 2)
+                stitches.append(match)
+            } else {
+                let match = Stitch(name: contentsValueThree, count: 3)
                 stitches.append(match)
             }
         }

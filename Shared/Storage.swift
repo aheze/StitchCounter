@@ -69,8 +69,7 @@ struct RegexBuilder {
         
         var regexes = [String]()
         for group in groupedStitches {
-            print(group.count, group.stitches)
-            
+
             var stitchedString = ""
             for (index, stitch) in group.stitches.enumerated() {
                 if index != group.stitches.count - 1 {
@@ -79,7 +78,19 @@ struct RegexBuilder {
                     stitchedString += stitch.name
                 }
             }
-            let regex = "(?<count\(group.count)>([0-9])*(\(stitchedString))( {1}[0-9]+)?)"
+            
+            let countText: String
+            switch group.count {
+            case 1:
+                countText = "count1"
+            case 2:
+                countText = "count2"
+            case 3:
+                countText = "count3"
+            default:
+                countText = "count1"
+            }
+            let regex = "(?<\(countText)>([0-9])*(\(stitchedString))( {1}[0-9]+)?)"
             regexes.append(regex)
         }
         
@@ -92,6 +103,7 @@ struct RegexBuilder {
             }
         }
 
+        print("Regex: \(finalRegex)")
         return finalRegex
     }
 }
