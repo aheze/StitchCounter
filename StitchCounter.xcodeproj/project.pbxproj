@@ -13,6 +13,14 @@
 		3CB7988126E68123000E86DA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB7986C26E68121000E86DA /* ContentView.swift */; };
 		3CB7988226E68123000E86DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB7986D26E68123000E86DA /* Assets.xcassets */; };
 		3CB7988326E68123000E86DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CB7986D26E68123000E86DA /* Assets.xcassets */; };
+		3CB7988D26E68146000E86DA /* CounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB7988C26E68146000E86DA /* CounterView.swift */; };
+		3CB7988E26E68146000E86DA /* CounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB7988C26E68146000E86DA /* CounterView.swift */; };
+		3CB7989026E681E1000E86DA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB7988F26E681E1000E86DA /* SettingsView.swift */; };
+		3CB7989126E681E1000E86DA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB7988F26E681E1000E86DA /* SettingsView.swift */; };
+		3CB7989326E68204000E86DA /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB7989226E68204000E86DA /* Model.swift */; };
+		3CB7989426E68204000E86DA /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB7989226E68204000E86DA /* Model.swift */; };
+		3CB7989926E6B940000E86DA /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB7989826E6B940000E86DA /* Storage.swift */; };
+		3CB7989A26E6B940000E86DA /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB7989826E6B940000E86DA /* Storage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +32,10 @@
 		3CB7987A26E68123000E86DA /* StitchCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StitchCounter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CB7987C26E68123000E86DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CB7987D26E68123000E86DA /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		3CB7988C26E68146000E86DA /* CounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterView.swift; sourceTree = "<group>"; };
+		3CB7988F26E681E1000E86DA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		3CB7989226E68204000E86DA /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		3CB7989826E6B940000E86DA /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +70,11 @@
 			isa = PBXGroup;
 			children = (
 				3CB7986B26E68121000E86DA /* StitchCounterApp.swift */,
+				3CB7989226E68204000E86DA /* Model.swift */,
 				3CB7986C26E68121000E86DA /* ContentView.swift */,
+				3CB7988C26E68146000E86DA /* CounterView.swift */,
+				3CB7988F26E681E1000E86DA /* SettingsView.swift */,
+				3CB7989826E6B940000E86DA /* Storage.swift */,
 				3CB7986D26E68123000E86DA /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -187,8 +203,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CB7989326E68204000E86DA /* Model.swift in Sources */,
 				3CB7988026E68123000E86DA /* ContentView.swift in Sources */,
+				3CB7989026E681E1000E86DA /* SettingsView.swift in Sources */,
 				3CB7987E26E68123000E86DA /* StitchCounterApp.swift in Sources */,
+				3CB7988D26E68146000E86DA /* CounterView.swift in Sources */,
+				3CB7989926E6B940000E86DA /* Storage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,8 +216,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CB7989426E68204000E86DA /* Model.swift in Sources */,
 				3CB7988126E68123000E86DA /* ContentView.swift in Sources */,
+				3CB7989126E681E1000E86DA /* SettingsView.swift in Sources */,
 				3CB7987F26E68123000E86DA /* StitchCounterApp.swift in Sources */,
+				3CB7988E26E68146000E86DA /* CounterView.swift in Sources */,
+				3CB7989A26E6B940000E86DA /* Storage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
