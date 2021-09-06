@@ -71,10 +71,10 @@
 			children = (
 				3CB7986B26E68121000E86DA /* StitchCounterApp.swift */,
 				3CB7989226E68204000E86DA /* Model.swift */,
+				3CB7989826E6B940000E86DA /* Storage.swift */,
 				3CB7986C26E68121000E86DA /* ContentView.swift */,
 				3CB7988C26E68146000E86DA /* CounterView.swift */,
 				3CB7988F26E681E1000E86DA /* SettingsView.swift */,
-				3CB7989826E6B940000E86DA /* Storage.swift */,
 				3CB7986D26E68123000E86DA /* Assets.xcassets */,
 			);
 			path = Shared;

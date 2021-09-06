@@ -5,7 +5,23 @@
 //  Created by Zheng on 9/6/21.
 //
 
-import Foundation
+import SwiftUI
+
+class Settings: ObservableObject {
+    @Published var regex: String = ""
+    @Published var stitches = [Stitch]()
+    
+    func readAppStorage(stitchesText: String) {
+        let stitches = Storage.readStitchesString(string: stitchesText)
+        self.stitches = stitches
+        self.regex = RegexBuilder.buildRegex(stitches: stitches)
+    }
+    
+    func getStitchesText() -> String {
+        let stitchesText = Storage.buildStitchesString(stitches: stitches)
+        return stitchesText
+    }
+}
 
 struct Storage {
     static func buildStitchesString(stitches: [Stitch]) -> String {
@@ -24,7 +40,9 @@ struct Storage {
         
         let stitchesStringSeparated = string.components(separatedBy: ",")
         for stitchString in stitchesStringSeparated {
+            
             let stitchStringSeparated = stitchString.components(separatedBy: "=")
+            print(stitchStringSeparated)
             let name = String(stitchStringSeparated[0])
             let count = Int(stitchStringSeparated[1]) ?? 1
             let stitch = Stitch(name: name, count: count)
@@ -73,7 +91,9 @@ struct RegexBuilder {
                 finalRegex += regex
             }
         }
-        print(finalRegex)
+
         return finalRegex
     }
 }
+
+

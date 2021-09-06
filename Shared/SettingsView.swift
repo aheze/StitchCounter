@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @AppStorage("stitchesText") var stitchesText: String = "(?<count1>([0-9])*(inc|dec|sc|sl st|hdc|dc|tr|fsc|sc[0-9]tog)( {1}[0-9]+)?)"
-    @Binding var regex: String
-    @State var stitches = [Stitch]()
+    
+    @ObservedObject var settings: Settings
+    @Binding var stitchesText: String
     
     var body: some View {
         
@@ -24,7 +24,8 @@ struct SettingsView: View {
                 Spacer()
                 
                 Button(action: {
-                    saveToAppStorage()
+                    stitchesText = settings.getStitchesText()
+                    settings.readAppStorage(stitchesText: stitchesText)
                 }) {
                     Text("Save")
                         .foregroundColor(.white)
@@ -35,66 +36,72 @@ struct SettingsView: View {
                 }
                 .buttonStyle(PlainButtonStyle())
             }
-            .padding(.horizontal)
             
-            ScrollView {
-                VStack(spacing: 12) {
-                    ForEach(stitches) { stitch in
-                        if let stitchIndex = stitches.firstIndex(where: { $0.id == stitch.id }) {
+            VStack(spacing: 12) {
+                ForEach(settings.stitches) { stitch in
+                    if let stitchIndex = settings.stitches.firstIndex(where: { $0.id == stitch.id }) {
+                        HStack {
                             HStack {
-                                HStack {
-                                    TextField("Stitch name", text: Binding(get: { stitches[stitchIndex].name }, set: { stitches[stitchIndex].name = $0 }))
-                                        .textFieldStyle(PlainTextFieldStyle())
-                                    
-                                    TextField("Count", value: Binding(get: { stitches[stitchIndex].count }, set: { stitches[stitchIndex].count = $0 }), formatter: NumberFormatter())
-                                        .textFieldStyle(PlainTextFieldStyle())
-                                        .multilineTextAlignment(.trailing)
-                                }
-                                .padding()
-                                .background(Color.white)
-                                .cornerRadius(8)
+                                TextField("Stitch name", text: Binding(get: { settings.stitches[stitchIndex].name }, set: { settings.stitches[stitchIndex].name = $0 }))
+                                    .font(.system(size: 17, weight: .medium))
+                                    .textFieldStyle(PlainTextFieldStyle())
                                 
-                                Button(action: {
-                                    print("removing: \(stitchIndex)")
-                                    stitches.remove(at: stitchIndex)
-                                }) {
-                                    Image(systemName: "xmark")
-                                        .font(.system(size: 12, weight: .medium))
-                                }
-                                .buttonStyle(PlainButtonStyle())
+                                TextField("Count", value: Binding(get: { settings.stitches[stitchIndex].count }, set: { settings.stitches[stitchIndex].count = $0 }), formatter: NumberFormatter())
+                                    .font(.system(size: 17, weight: .bold))
+                                    .textFieldStyle(PlainTextFieldStyle())
+                                    .multilineTextAlignment(.trailing)
                             }
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(8)
+                            
+                            Button(action: {
+                                settings.stitches.remove(at: stitchIndex)
+                            }) {
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 15, weight: .medium))
+                                    .frame(width: 40)
+                            }
+                            .buttonStyle(PlainButtonStyle())
                         }
                     }
-                    
-                    Button(action: {
-                        let newStitch = Stitch(name: "", count: 1)
-                        stitches.append(newStitch)
-                    }) {
-                        Text("Add")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1)))
-                            .cornerRadius(8)
-                    }
-                    .buttonStyle(PlainButtonStyle())
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal)
+                
+                
+                Button(action: {
+                    let newStitch = Stitch(name: "", count: 1)
+                    withAnimation {
+                        settings.stitches.append(newStitch)
+                    }
+                }) {
+                    Text("Add")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1)))
+                        .cornerRadius(8)
+                }
+                .buttonStyle(PlainButtonStyle())
             }
+            .animation(.default, value: settings.stitches)
+            .frame(maxWidth: .infinity)
+            
+            Spacer()
+            
         }
-        .onAppear {
-            readAppStorage()
-        }
+        .padding(.horizontal)
     }
     
-    func readAppStorage() {
-        let stitches = Storage.readStitchesString(string: stitchesText)
-        self.stitches = stitches
+    func move(from source: IndexSet, to destination: Int) {
+        settings.stitches.move(fromOffsets: source, toOffset: destination)
     }
     
-    func saveToAppStorage() {
-        let text = Storage.buildStitchesString(stitches: stitches)
-        stitchesText = text
-        regex = RegexBuilder.buildRegex(stitches: stitches)
-    }
+    
 }
+//extension NSTableView {
+//    open override func viewDidMoveToWindow() {
+//        super.viewDidMoveToWindow()
+//
+//        backgroundColor = NSColor.clear
+//        enclosingScrollView!.drawsBackground = false
+//    }
+//}

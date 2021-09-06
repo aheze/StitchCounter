@@ -141,11 +141,11 @@ struct CounterView: View {
         let extractedGroups = matchRegex(stringToCheck: input, regex: Constants.groupRegex)
         
         for group in extractedGroups {
-            let contents = extractMatchText(group: group, name: "contents", in: input)
-            let groupMultiplierString = extractMatchText(group: group, name: "groupMultiplier", in: input)
+            let contents = extractStitchText(group: group, name: "contents", in: input)
+            let groupMultiplierString = extractStitchText(group: group, name: "groupMultiplier", in: input)
             let groupMultiplier = Int(groupMultiplierString) ?? 1
             
-            let groupResults = countMatchesIn(string: contents)
+            let groupResults = countStitchesIn(string: contents)
             
             let totalCount = getTotal(from: groupResults) * (groupMultiplier)
             let combinedResult = Result(pattern: contents, count: totalCount, groupMultiplier: groupMultiplier)
@@ -153,7 +153,7 @@ struct CounterView: View {
         }
         
         let ungroupedInput = input.replacingOccurrences(of: Constants.groupRegex, with: "", options: .regularExpression, range: nil)
-        let ungroupedResults = countMatchesIn(string: ungroupedInput)
+        let ungroupedResults = countStitchesIn(string: ungroupedInput)
         results += ungroupedResults
         
         withAnimation {
@@ -162,41 +162,41 @@ struct CounterView: View {
    
     }
     
-    func countMatchesIn(string: String) -> [Result] {
-        var matches = [Match]()
+    func countStitchesIn(string: String) -> [Result] {
+        var stitches = [Stitch]()
         var results = [Result]()
         
         let matchedSubstrings = matchRegex(stringToCheck: string, regex: regex)
         for substring in matchedSubstrings {
-            let contentsValueOne = extractMatchText(group: substring, name: "one", in: string)
-            let contentsValueTwo = extractMatchText(group: substring, name: "two", in: string)
+            let contentsValueOne = extractStitchText(group: substring, name: "one", in: string)
+            let contentsValueTwo = extractStitchText(group: substring, name: "two", in: string)
             
             if !contentsValueOne.isEmpty {
-                let match = Match(text: contentsValueOne, multiplier: 1)
-                matches.append(match)
+                let match = Stitch(name: contentsValueOne, count: 1)
+                stitches.append(match)
             } else {
-                let match = Match(text: contentsValueTwo, multiplier: 2)
-                matches.append(match)
+                let match = Stitch(name: contentsValueTwo, count: 2)
+                stitches.append(match)
             }
         }
         
-        for match in matches {
-            let matchedSubstring = match.text
+        for stitch in stitches {
+            let matchedSubstring = stitch.name
             
             var multipliers = [Int]()
-            let countMatches = matchRegex(stringToCheck: matchedSubstring, regex: Constants.multiplierRegex)
-            for countMatch in countMatches {
-                if let substringRange = Range(countMatch.range, in: matchedSubstring) {
+            let countStitches = matchRegex(stringToCheck: matchedSubstring, regex: Constants.multiplierRegex)
+            for countStitch in countStitches {
+                if let substringRange = Range(countStitch.range, in: matchedSubstring) {
                     let countString = String(matchedSubstring[substringRange])
                     multipliers.append(Int(countString) ?? 1)
                 }
             }
             if multipliers.count > 0 {
-                let numberOfStitches = match.multiplier * multipliers.reduce(1, *)
+                let numberOfStitches = stitch.count * multipliers.reduce(1, *)
                 let result = Result(pattern: matchedSubstring, count: numberOfStitches)
                 results.append(result)
             } else {
-                let numberOfStitches = match.multiplier
+                let numberOfStitches = stitch.count
                 let result = Result(pattern: matchedSubstring, count: numberOfStitches)
                 results.append(result)
             }
@@ -221,19 +221,19 @@ struct CounterView: View {
             options: []
         )
         
-        let matches = inputRegex.matches(
+        let stitches = inputRegex.matches(
             in: stringToCheck,
             options: [],
             range: inputRange
         )
         
-        return matches
+        return stitches
     }
     
-    func extractMatchText(group: NSTextCheckingResult, name: String, in fullString: String) -> String {
+    func extractStitchText(group: NSTextCheckingResult, name: String, in fullString: String) -> String {
         let matchRange = group.range(withName: name)
         
-        // Extract the substring matching the named capture group
+        /// Extract the substring that matches the named capture group
         if let substringRange = Range(matchRange, in: fullString) {
             let matchedSubstring = String(fullString[substringRange])
             return matchedSubstring
