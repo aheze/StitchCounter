@@ -1,7 +1,7 @@
 
-[![StitchCounter](Assets/head.png)](https://github.com/aheze/StitchCounter/raw/main/Assets/StitchCounter.zip)
+[![StitchCounter](Assets/head.png)](#)
 
-**An app to count your crochet pattern's stitches!** Made with SwiftUI with no 3rd party dependencies. [Mac app](https://github.com/aheze/StitchCounter/raw/main/Assets/StitchCounter.zip) • [iOS app](https://github.com/aheze/StitchCounter/raw/main/Assets/StitchCounter.ipa)
+**An app to count your crochet pattern's stitches!** Made with SwiftUI, no 3rd party dependencies. [Mac app](https://github.com/aheze/StitchCounter/raw/main/Assets/StitchCounter.zip) • [iOS ipa](https://github.com/aheze/StitchCounter/raw/main/Assets/StitchCounter.ipa)
 
 
 ### Purpose
@@ -45,7 +45,24 @@ Settings
 </table>
 
 
-### Crochet abbreviation reference
+### Crochet Abbreviation Reference
+These come built-in in the app. If you want to edit, add, or remove any, just head over to the **Settings** screen.
+
+
+Stitch name | Abbreviation | # of stitches
+--- | --- | ---
+Increase | `inc` | 2
+Single Crochet | `sc` | 1
+Single Crochet # Together | `sc#tog` | 1
+Decrease | `dec` | 1
+Slip Stitch | `sl st` | 1
+Half Double Crochet | `hdc` | 1
+Double Crochet | `dc` | 1
+Triple Crochet | `tr` | 1
+Foundation single crochet | `FSC` | 1
+
+
+
 
 <details>
 <summary><strong>What's crochet?</strong></summary>
