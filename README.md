@@ -1,7 +1,7 @@
 
 [![StitchCounter](Assets/head.png)](#)
 
-**An app to count your crochet pattern's stitches!** Made with SwiftUI, no 3rd party dependencies. [Mac app](https://github.com/aheze/StitchCounter/raw/main/Assets/StitchCounter.zip) • [iOS ipa](https://github.com/aheze/StitchCounter/raw/main/Assets/StitchCounter.ipa)
+**An app to count your crochet pattern's stitches!** Made with SwiftUI, no 3rd party dependencies. Powered by regular expressions. Download: [Mac app](https://github.com/aheze/StitchCounter/raw/main/Assets/StitchCounter.zip) • [iOS ipa](https://github.com/aheze/StitchCounter/raw/main/Assets/StitchCounter.ipa)
 
 
 ### Purpose
