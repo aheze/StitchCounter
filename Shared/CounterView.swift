@@ -14,142 +14,184 @@ struct CounterView: View {
     @Binding var regex: String
     
     var body: some View {
-        VStack(spacing: 12) {
-            HStack {
-                Text("Enter Pattern")
-                    .font(.system(size: 17, weight: .medium))
-                
-                Spacer()
-            }
+        ZStack {
             
-            TextEditor(text: $input)
-                .font(.system(size: 21, weight: .medium))
-                .frame(maxHeight: results.count > 0 ? 100 : .infinity)
-                .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 0))
-                .background(Color("Background"))
-                .cornerRadius(16)
-                .overlay(
-                    Group {
-                        if input.isEmpty {
-                            Text("Enter your pattern here")
-                                .font(.system(size: 21, weight: .bold))
-                                .opacity(0.25)
-                                .padding(EdgeInsets(top: 16, leading: 24, bottom: 0, trailing: 0))
-                        }
-                    }, alignment: .topLeading
-                )
+            #if os(iOS)
+            Color(UIColor.secondarySystemBackground)
+            #endif
             
-            if results.count > 0 {
-                VStack(spacing: 8) {
-                    HStack {
-                        Text("Total number of stitches:")
-                            .font(.system(size: 17, weight: .medium))
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            let pasteboard = NSPasteboard.general
-                            pasteboard.declareTypes([.string], owner: nil)
-                            pasteboard.setString("\(getTotal(from: results))", forType: .string)
-                        }) {
-                            Text("\(getTotal(from: results))")
-                                .font(.system(size: 32, weight: .bold))
-                                .foregroundColor(Color.accentColor)
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    }
+            VStack(spacing: 12) {
+                HStack {
+                    Text("Enter Pattern")
+                        .font(.system(size: 17, weight: .medium))
                     
-                    ScrollView {
-                        VStack {
-                            ForEach(results) { result in
-                                HStack {
-                                    if let groupMultiplier = result.groupMultiplier {
-                                        HStack {
-                                            Text(result.pattern)
-                                                .padding(6)
-                                                .background(Color("Background"))
-                                                .cornerRadius(6)
-                                            
-                                            Image(systemName: "xmark")
-                                                .font(.system(size: 12, weight: .regular))
-                                            
-                                            Text("\(groupMultiplier)")
-                                        }
-                                        .font(.system(size: 17, weight: .regular))
-                                    } else {
-                                        Text(result.pattern)
-                                            .font(.system(size: 17, weight: .regular))
-                                    }
-                                    
-                                    Spacer()
-                                    
-                                    Text("\(result.count)")
-                                        .font(.system(size: 17, weight: .regular))
-                                }
-                                .padding(10)
-                                .background(Color("SecondaryBackground"))
-                                .cornerRadius(8)
-                            }
-                        }
-                        .padding(16)
-                    }
+                    Spacer()
+                }
+                
+                TextEditor(text: $input)
+                    .font(.system(size: 21, weight: .medium))
+                    .frame(maxHeight: results.count > 0 ? 100 : .infinity)
+                    .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 0))
                     .background(Color("Background"))
                     .cornerRadius(16)
+                    .overlay(
+                        Group {
+                            if input.isEmpty {
+                                #if os(macOS)
+                                Text("Enter your pattern here")
+                                    .font(.system(size: 21, weight: .bold))
+                                    .opacity(0.25)
+                                    .padding(EdgeInsets(top: 16, leading: 24, bottom: 0, trailing: 0))
+                                #else
+                                Text("Enter your pattern here")
+                                    .font(.system(size: 21, weight: .bold))
+                                    .opacity(0.25)
+                                    .padding(EdgeInsets(top: 24, leading: 24, bottom: 0, trailing: 0))
+                                #endif
+                            }
+                        }, alignment: .topLeading
+                    )
+                
+                if results.count > 0 {
+                    VStack(spacing: 8) {
+                        HStack {
+                            Text("Total number of stitches:")
+                                .font(.system(size: 17, weight: .medium))
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                
+                                #if os(macOS)
+                                let pasteboard = NSPasteboard.general
+                                pasteboard.declareTypes([.string], owner: nil)
+                                pasteboard.setString("\(getTotal(from: results))", forType: .string)
+                                
+                                #else
+                                
+                                UIPasteboard.general.string = "Hello world"
+                                
+                                #endif
+                                
+                            }) {
+                                Text("\(getTotal(from: results))")
+                                    .font(.system(size: 32, weight: .bold))
+                                    .foregroundColor(Color.accentColor)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                        
+                        ScrollView {
+                            VStack {
+                                ForEach(results) { result in
+                                    HStack {
+                                        if let groupMultiplier = result.groupMultiplier {
+                                            HStack {
+                                                Text(result.pattern)
+                                                    .padding(6)
+                                                    .background(Color("Background"))
+                                                    .cornerRadius(6)
+                                                
+                                                Image(systemName: "xmark")
+                                                    .font(.system(size: 12, weight: .regular))
+                                                
+                                                Text("\(groupMultiplier)")
+                                            }
+                                            .font(.system(size: 17, weight: .regular))
+                                        } else {
+                                            Text(result.pattern)
+                                                .font(.system(size: 17, weight: .regular))
+                                        }
+                                        
+                                        Spacer()
+                                        
+                                        Text("\(result.count)")
+                                            .font(.system(size: 17, weight: .regular))
+                                    }
+                                    .padding(10)
+                                    .background(Color("SecondaryBackground"))
+                                    .cornerRadius(8)
+                                }
+                            }
+                            .padding(16)
+                        }
+                        .background(Color("Background"))
+                        .cornerRadius(16)
+                    }
+                } else {
+                    if countPressedOnce {
+                        Text("Enter a valid pattern")
+                            .font(.system(size: 17, weight: .medium))
+                            .opacity(0.5)
+                    }
+                    Spacer()
                 }
-            } else {
-                if countPressedOnce {
-                    Text("Enter a valid pattern")
-                        .font(.system(size: 17, weight: .medium))
-                        .opacity(0.5)
-                }
-                Spacer()
             }
+            .padding()
         }
         .onChange(of: regex) { _ in
             count()
         }
-        .padding()
         .toolbar {
-            ToolbarItemGroup(placement: .primaryAction) {
-                if !input.isEmpty {
-                    Button(action: {
-                        input = ""
-                        count()
-                        withAnimation {
-                            countPressedOnce = false
-                        }
-                    }) {
-                        Text("Clear")
-                            .font(.system(size: 15, weight: .medium))
-                            .foregroundColor(Color.white)
-                            .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
-                            .background(Color("Destructive"))
-                            .cornerRadius(8)
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }
-                
-                Button(action: {
-                    count()
-                    withAnimation {
-                        countPressedOnce = true
-                    }
-                }) {
-                    Text("Count")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(Color.white)
-                        .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
-                        .background(Color.accentColor)
-                        .cornerRadius(8)
-                }
-                .buttonStyle(PlainButtonStyle())
-                .allowsTightening(!input.isEmpty)
-                .opacity(input.isEmpty ? 0.75 : 1)
+            #if os(iOS)
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                toolbar
             }
-            
+            #else
+            ToolbarItemGroup(placement: .primaryAction) {
+                toolbar
+            }
+            #endif
         }
     }
     
+    var toolbar: some View {
+        Group {
+            if !input.isEmpty {
+                Button(action: {
+                    input = ""
+                    count()
+                    withAnimation {
+                        countPressedOnce = false
+                    }
+                }) {
+                    #if os(macOS)
+                    Text("Clear")
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundColor(Color.white)
+                        .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
+                        .background(Color("Destructive"))
+                        .cornerRadius(8)
+                    
+                    #else
+                    Text("Clear")
+                    #endif
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            
+            Button(action: {
+                count()
+                withAnimation {
+                    countPressedOnce = true
+                }
+            }) {
+                #if os(macOS)
+                Text("Count")
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundColor(Color.white)
+                    .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
+                    .background(Color.accentColor)
+                    .cornerRadius(8)
+                #else
+                Text("Count")
+                #endif
+            }
+            .buttonStyle(PlainButtonStyle())
+            .allowsTightening(!input.isEmpty)
+            .opacity(input.isEmpty ? 0.75 : 1)
+        }
+    }
     
     func count() {
         
@@ -262,18 +304,5 @@ struct CounterView: View {
             return matchedSubstring
         }
         return ""
-    }
-}
-
-extension String {
-    func toInt() -> Int {
-        switch self {
-        case "one":
-            return 1
-        case "two":
-            return 2
-        default:
-            return 0
-        }
     }
 }

@@ -13,6 +13,7 @@ class Settings: ObservableObject {
     
     func readAppStorage(stitchesText: String) {
         let stitches = Storage.readStitchesString(string: stitchesText)
+        print(stitchesText)
         self.stitches = stitches
         self.regex = RegexBuilder.buildRegex(stitches: stitches)
     }
