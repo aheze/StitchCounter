@@ -23,7 +23,7 @@ Settings
   
 <tr>
 <td>
-<img src="Assets/main.png"> 
+<img src="Assets/counter.png"> 
 </td>
 <td>
 <img src="Assets/settings.png">
