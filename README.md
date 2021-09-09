@@ -35,7 +35,7 @@ Settings
   
 - Write any pattern, then press <strong>Count</strong>. That's it!
 - It's powered by regex, so your pattern doesn't need to be perfect.
-- Press the number to copy it to your clipboard.
+- Press the big purple number to copy it to your clipboard.
 - The breakdown lets you double-check to make sure everything is right.
 - Have your own stitch abbreviations? No problem, just go to **Settings**, then press <strong>Save</strong>.
 - Stitch abbreviations support regex too.
@@ -46,7 +46,7 @@ Settings
 
 
 ### Crochet Abbreviation Reference
-These come built-in in the app. If you want to edit, add, or remove any, just head over to the **Settings** screen.
+These come built-in with the app. If you want to edit, add, or remove any, just head over to the **Settings** screen.
 
 
 Stitch name | Abbreviation | # of stitches
