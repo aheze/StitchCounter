@@ -1,7 +1,7 @@
 
 [![StitchCounter](Assets/head.png)](#)
 
-**An app to count your crochet pattern's stitches!** Made with SwiftUI, no 3rd party dependencies. Powered by regular expressions. Download: [Mac app](https://github.com/aheze/StitchCounter/raw/main/Assets/StitchCounter.zip) • [iOS ipa](https://github.com/aheze/StitchCounter/raw/main/Assets/StitchCounter.ipa)
+**An app to count your crochet patterns' stitches!** Made with 100% SwiftUI, no UIKit, and no 3rd party dependencies. Powered by regular expressions. Download: [Mac app](https://github.com/aheze/StitchCounter/raw/main/Assets/StitchCounter.zip) • [iOS ipa](https://github.com/aheze/StitchCounter/raw/main/Assets/StitchCounter.ipa)
 
 
 ### Purpose
@@ -59,7 +59,7 @@ Slip Stitch | `sl st` | 1
 Half Double Crochet | `hdc` | 1
 Double Crochet | `dc` | 1
 Triple Crochet | `tr` | 1
-Foundation single crochet | `FSC` | 1
+Foundation Single Crochet | `FSC` | 1
 
 
 
